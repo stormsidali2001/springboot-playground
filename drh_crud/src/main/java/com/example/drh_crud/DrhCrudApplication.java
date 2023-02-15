@@ -65,7 +65,7 @@ public class DrhCrudApplication  implements CommandLineRunner {
 
 		System.out.println("Tests -------------------------------");
 
-		employeeRepository.findByEmailIsLike("com").forEach(System.out::println);
+		employeeRepository.findEmployeesByEmailContaining("com").forEach(System.out::println);
 
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.drh_crud.controllers;
 
 import com.example.drh_crud.dtos.EmployeeDto;
+import com.example.drh_crud.dtos.EmployeeWithDepartementDto;
 import com.example.drh_crud.entities.Departement;
 import com.example.drh_crud.entities.Diplome;
 import com.example.drh_crud.entities.Employee;
@@ -21,7 +22,7 @@ public class DrhController {
     @Autowired
     DepartementRepository departementRepository;
     @GetMapping("departement/employee-project")
-    public List<Object> findIdAndProjectNameByDepartementName(@RequestParam("dn") String dn){
+    public List<Object[]> findIdAndProjectNameByDepartementName(@RequestParam("dn") String dn){
         return employeeRepository.findEmployeeIdAndProjectNameByDepartement(dn);
     }
 
@@ -44,6 +45,37 @@ public class DrhController {
                                 diplomeOptional.get().getSpeciality(),
                                 diplomeOptional.get().getAnneeObtention()
                            )
+                : null;
+
+        Employee employee = new Employee();
+        employee.setName(employeeDto.getName());
+        employee.setGenre(employeeDto.getGenre());
+        employee.setStarting_work_date(employeeDto.getStarting_work_date());
+        employee.setEmail(employeeDto.getEmail());
+        employee.setDepartement(departement);
+        employee.setDiplome(diplome);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return ResponseEntity.ok(savedEmployee);
+    }
+    @PostMapping("/employeeInBody")
+    public ResponseEntity<Employee> createEmployeeInBody(
+            @RequestBody EmployeeWithDepartementDto body
+    ) {
+        Optional<Departement> departementOptional = departementRepository.findById(body.getDepartementId());
+        EmployeeDto employeeDto =body.clone();
+        if (departementOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Departement departement = departementOptional.get();
+        Optional<Diplome> diplomeOptional = employeeDto.getDiplome();
+        Diplome diplome = diplomeOptional.isPresent() ?
+
+                new Diplome(
+                        diplomeOptional.get().getNiveau(),
+                        diplomeOptional.get().getSpeciality(),
+                        diplomeOptional.get().getAnneeObtention()
+                )
                 : null;
 
         Employee employee = new Employee();

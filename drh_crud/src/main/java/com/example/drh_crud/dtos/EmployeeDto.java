@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Data @AllArgsConstructor @NoArgsConstructor
-public class EmployeeDto {
+public class EmployeeDto implements  Cloneable{
 
     private String name;
 
@@ -28,4 +28,18 @@ public class EmployeeDto {
     private Optional<Diplome> diplome;
 
 
+    @Override
+    public EmployeeDto clone() {
+        try {
+            EmployeeDto clone = new EmployeeDto();
+            clone.setName(this.name);
+            clone.setGenre(this.genre);
+            clone.setStarting_work_date(this.starting_work_date);
+            clone.setEmail(this.email);
+            clone.setDiplome(this.diplome);
+            return clone;
+        } catch ( Exception e) {
+            throw new AssertionError(e);
+        }
+    }
 }

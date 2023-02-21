@@ -1,5 +1,7 @@
 package com.example.msscolarity.entities;
 
+import com.example.msscolarity.models.Formation;
+import com.example.msscolarity.models.Virement;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,9 +22,20 @@ public class Etudiant {
     @Temporal(TemporalType.DATE)
     private Date dateN;
 
+    @Temporal(TemporalType.DATE)
+    private Date dateInscription;
+
     @ManyToOne
     private Etablissement etablissement;
 
     private Long idFormation;
+
+    @Transient()
+    private Formation formation;
+
+    @Transient()
+    private Virement virement;
+
+
 
 }

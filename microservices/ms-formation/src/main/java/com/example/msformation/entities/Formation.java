@@ -15,7 +15,6 @@ public class Formation {
     private Long idFormation;
     private String nom;
     private Integer duree;
-
     @Transient
     private Collection<Etudiant> etudiants;
 }

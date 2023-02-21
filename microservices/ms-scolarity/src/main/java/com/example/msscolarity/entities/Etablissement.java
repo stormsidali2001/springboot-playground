@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Collection;
 import java.util.Date;
@@ -19,6 +20,7 @@ public class Etablissement {
     private String nom;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "etablissement")
     private Collection<Etudiant> etudiants;
 }

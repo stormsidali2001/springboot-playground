@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("api")
@@ -45,8 +43,8 @@ public class EtudiantController {
         Optional<Etudiant> ep = etudiantRepository.findById(ide);
         if(ep.isEmpty()) return ResponseEntity.notFound().build();
         Etudiant etudiant = ep.get();
-        Virement virement = virementProxy.getVirement(ide,"virement");
-        etudiant.setVirement(virement);
+        List<Virement> virements = new ArrayList<>(virementProxy.getVirements(ide,"virement").getContent());
+        etudiant.setVirements(virements);
         return ResponseEntity.ok(etudiant);
     }
 }

@@ -33,6 +33,7 @@ public class MsBourseApplication implements CommandLineRunner {
 		Virement v1 = virementRepository.save(new Virement(null,2000f,Date.valueOf("2022-04-20"),e1));
 		Virement v2= virementRepository.save(new Virement(null,2000f,Date.valueOf("2022-04-20"),e2));
 		Virement v3= virementRepository.save(new Virement(null,2000f,Date.valueOf("2022-04-20"),e3));
+		Virement v4= virementRepository.save(new Virement(null,2000f,Date.valueOf("2022-04-20"),e1));
 
 
 	}

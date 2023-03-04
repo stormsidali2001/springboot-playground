@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-@RefreshScope
+@RefreshScope //use http://192.168.43.118:8082/actuator/refresh to refresh the data
 public class FormationController {
     @Autowired
     FormationRepository formationRepository;
@@ -28,6 +28,7 @@ public class FormationController {
 
     @Value("${mes-config.email}")
     public String email;
+
 
     @GetMapping("email")
     public String getEmail(){

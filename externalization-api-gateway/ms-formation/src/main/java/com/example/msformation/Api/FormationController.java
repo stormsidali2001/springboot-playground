@@ -5,6 +5,8 @@ import com.example.msformation.model.Etudiant;
 import com.example.msformation.proxy.EtudiantProxy;
 import com.example.msformation.repositories.FormationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +18,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
+@RefreshScope
 public class FormationController {
     @Autowired
     FormationRepository formationRepository;
 
     @Autowired
     EtudiantProxy etudiantProxy;
+
+    @Value("${mes-config.email}")
+    public String email;
+
+    @GetMapping("email")
+    public String getEmail(){
+        return this.email;
+    }
 
     @GetMapping("formations/{idf}")
     Formation getFormationWithStudents(@PathVariable("idf") Long idf ) {

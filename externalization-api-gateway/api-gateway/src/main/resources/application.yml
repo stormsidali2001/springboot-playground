@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: route1
+          predicates:
+            - Path=/business/formation/**
+          filters:
+            - RewritePath=/business/formation/(?<s>.*), /${s}
+            - name: CircuitBreaker
+              args:
+                name: fallback-ms-formation
+                fallbackuri: forward:/api/defaultFormation
+          uri: lb://ms-formation
+        - id: route2
+          predicates:
+            - Path=/business/scolarity/**
+          filters:
+            - RewritePath=/business/formation/(?<s>.*), /${s}
+          uri: lb://ms-scolarity
+
+

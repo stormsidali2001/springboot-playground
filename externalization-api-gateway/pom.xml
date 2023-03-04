@@ -19,6 +19,7 @@
 		<module>config-server</module>
 		<module>ms-formation</module>
 		<module>ms-scolarity</module>
+		<module>api-gateway</module>
     </modules>
 
     <properties>

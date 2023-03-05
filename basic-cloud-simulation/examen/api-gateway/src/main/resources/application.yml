@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: route1
+          predicates:
+            - Path=/cloud/user/**
+          filters:
+            - RewritePath=/cloud/user/(?<s>.*), /${s}
+
+          uri: lb://ms-user
+        - id: route2
+          predicates:
+            - Path=/cloud/server/**
+          filters:
+            - RewritePath=/cloud/server/(?<s>.*), /${s}
+          uri: lb://ms-server

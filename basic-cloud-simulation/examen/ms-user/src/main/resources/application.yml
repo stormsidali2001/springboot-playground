@@ -1,0 +1,29 @@
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ms-server:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5 # failure = 5 failed calls
+        automaticTransitionFromOpenToHalfOpenEnabled: true #automatic transition from open to half open state when the timeout is finished
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 5 # if treshhold is 50 ,  3/5 failures means going to the half open state
+        slidingWindowType: COUNT_BASED
+

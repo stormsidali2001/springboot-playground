@@ -9,6 +9,7 @@ import com.example.msorder.dto.OrderResponseDto;
 import com.example.msorder.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Transactional
     public String placeOrder(OrderDto orderDto){
         Order order = Order.builder()
                 .orderNumber(UUID.randomUUID().toString())

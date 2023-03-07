@@ -34,7 +34,7 @@ public class OrderService {
 
        List<String> skus = order.getLines().stream().map(OrderLine::getSku).toList();
         InStockResponse[] inventoryResponse =  webClient.get()
-                .uri("http://localhost:9006/api/inventory/is-in-stock",uriBuilder->uriBuilder.queryParam("skus",skus).build())
+                .uri("http://ms-inventory/api/inventory/is-in-stock",uriBuilder->uriBuilder.queryParam("skus",skus).build())
                 .retrieve()
                 .bodyToMono(InStockResponse[].class) //the response is a boolean type
                 .block(); //to make it sync (by default its async)

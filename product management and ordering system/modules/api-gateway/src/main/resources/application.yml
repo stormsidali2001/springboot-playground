@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: product-service-route
+          predicates:
+            - Path=/api/products
+          uri: lb://product-service
+        - id: ms-order-route
+          predicates:
+            - Path=/api/orders
+          uri: lb://ms-order
+        - id: ms-inventory-route
+          predicates:
+            - Path=/api/products
+          uri: lb://ms-inventory
+        - id: discovery-server-route
+          predicates:
+            - Path=/eureka/web
+          uri: http://localhost:8888
+          filters:
+            - SetPath=/ # by default its passing eureka/web so the resulting uri is :http://localhost:8888/eureka/web

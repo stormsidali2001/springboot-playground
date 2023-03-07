@@ -20,3 +20,8 @@ spring:
           uri: http://localhost:8888
           filters:
             - SetPath=/ # by default its passing eureka/web so the resulting uri is :http://localhost:8888/eureka/web
+
+        - id: discovery-server-static-resources
+          predicates:
+            - Path=/eureka/**
+          uri: http://localhost:8888

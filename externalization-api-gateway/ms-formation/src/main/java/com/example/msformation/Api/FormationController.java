@@ -29,6 +29,10 @@ public class FormationController {
     @Value("${mes-config.email}")
     public String email;
 
+    @GetMapping("defaultFormation")
+    String getDefault(){
+        return "default fromation ";
+    }
 
     @GetMapping("email")
     public String getEmail(){

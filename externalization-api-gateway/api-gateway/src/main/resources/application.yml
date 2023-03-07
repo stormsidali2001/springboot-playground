@@ -1,0 +1,37 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: route1
+          predicates:
+            - Path=/business/formation/**
+          filters:
+            - RewritePath=/business/formation/(?<s>.*), /${s}
+            - name: CircuitBreaker
+              args:
+                name: fallback-ms-formation
+                fallbackuri: forward:/defaultFormation
+          uri: lb://ms-formation
+        - id: route2
+          predicates:
+            - Path=/business/scolarity/**
+          filters:
+            - RewritePath=/business/formation/(?<s>.*), /${s}
+          uri: lb://ms-scolarity
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventory:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        slidingWindowType: COUNT_BASED
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  timelimiter:
+    instances:
+      inventory:
+        timeoutDuration: 3s
+

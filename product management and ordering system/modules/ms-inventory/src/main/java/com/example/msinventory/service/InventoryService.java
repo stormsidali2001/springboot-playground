@@ -1,5 +1,6 @@
 package com.example.msinventory.service;
 
+import com.example.msinventory.dto.InStockResponse;
 import com.example.msinventory.dto.InventoryDto;
 import com.example.msinventory.dto.InventoryResponse;
 import com.example.msinventory.entities.Inventory;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class InventoryService {
@@ -36,8 +38,14 @@ public class InventoryService {
     }
 
     @Transactional(readOnly = true)
-    public boolean isInStock(String sku){
-        return  inventoryRepository.findBySku(sku).isPresent();
+    public List<InStockResponse> isInStock(List<String> skus){
+        return  inventoryRepository.findBySkuIn(skus).stream().map(this::mapToInStock).toList();
+    }
+    public InStockResponse mapToInStock(Inventory inv){
+        return InStockResponse.builder()
+                .sku(inv.getSku())
+                .isInStock(inv.getQuantity() > 0)
+                .build();
     }
 
 }

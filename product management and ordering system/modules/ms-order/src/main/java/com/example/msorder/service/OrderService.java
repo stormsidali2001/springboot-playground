@@ -2,22 +2,25 @@ package com.example.msorder.service;
 
 import com.example.msorder.Entities.Order;
 import com.example.msorder.Entities.OrderLine;
-import com.example.msorder.dto.OrderDto;
-import com.example.msorder.dto.OrderLineDto;
-import com.example.msorder.dto.OrderLineResponse;
-import com.example.msorder.dto.OrderResponseDto;
+import com.example.msorder.dto.*;
 import com.example.msorder.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private WebClient webClient;
 
     @Transactional
     public String placeOrder(OrderDto orderDto){
@@ -28,6 +31,17 @@ public class OrderService {
                 )
                 .build();
         orderRepository.save(order);
+
+       List<String> skus = order.getLines().stream().map(OrderLine::getSku).toList();
+        InStockResponse[] inventoryResponse =  webClient.get()
+                .uri("http://localhost:9006/api/inventory/is-in-stock",uriBuilder->uriBuilder.queryParam("skus",skus).build())
+                .retrieve()
+                .bodyToMono(InStockResponse[].class) //the response is a boolean type
+                .block(); //to make it sync (by default its async)
+        if(inventoryResponse.length != skus.size())  throw new IllegalArgumentException("wrong skus");
+        System.out.println("inventory response " + inventoryResponse.length);
+        boolean allInStock = Arrays.stream(inventoryResponse).allMatch(InStockResponse::getIsInStock);
+        if(!allInStock) throw new IllegalArgumentException("some products are not in stock");
         return "order placed succesfully";
     }
     public OrderLine mapOrderLineDtoToOrderLine(OrderLineDto orderLineDto){

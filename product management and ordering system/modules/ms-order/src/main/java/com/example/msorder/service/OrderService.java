@@ -20,7 +20,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private WebClient webClient;
+    private WebClient.Builder webClientBuilder;
 
     @Transactional
     public String placeOrder(OrderDto orderDto){
@@ -33,7 +33,7 @@ public class OrderService {
         orderRepository.save(order);
 
        List<String> skus = order.getLines().stream().map(OrderLine::getSku).toList();
-        InStockResponse[] inventoryResponse =  webClient.get()
+        InStockResponse[] inventoryResponse =  webClientBuilder.build().get()
                 .uri("http://ms-inventory/api/inventory/is-in-stock",uriBuilder->uriBuilder.queryParam("skus",skus).build())
                 .retrieve()
                 .bodyToMono(InStockResponse[].class) //the response is a boolean type

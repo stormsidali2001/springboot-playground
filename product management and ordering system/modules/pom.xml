@@ -22,6 +22,7 @@
 		<module>product-service</module>
 		<module>ms-inventory</module>
 		<module>registry</module>
+		<module>api-gateway</module>
 	</modules>
 	<dependencies>
 		<dependency>

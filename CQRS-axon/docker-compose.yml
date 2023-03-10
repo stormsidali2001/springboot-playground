@@ -1,0 +1,10 @@
+axon-server:
+  image: axoniq/axonserver
+  container_name: axon-server
+  ports:
+    - 8124:8124
+    - 8024:8024
+
+
+  environment:
+    AXON_AXONSERVER_SERVERS: axon:8124

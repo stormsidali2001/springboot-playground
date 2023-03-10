@@ -1,4 +1,4 @@
-package com.example.mscommandlibrary;
+package com.example.mslibraryquery;
 
 import com.example.coreapi.config.AxonConfig;
 import org.springframework.boot.SpringApplication;
@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import({AxonConfig.class})
-public class MsCommandLibraryApplication {
+public class MsLibraryQueryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsCommandLibraryApplication.class, args);
+		SpringApplication.run(MsLibraryQueryApplication.class, args);
 	}
 
 }

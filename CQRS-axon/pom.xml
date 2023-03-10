@@ -16,6 +16,7 @@
 	<modules>
 		<module>core-api</module>
 		<module>ms-command-library</module>
+		<module>ms-library-query</module>
 	</modules>
 	<properties>
 		<java.version>17</java.version>
